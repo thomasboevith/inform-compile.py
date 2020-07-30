@@ -186,8 +186,7 @@ if __name__ == '__main__':
             continue
 
         if os.path.isfile(storyfilename) and not args['--force']:
-            log.warning('Storyfilename already exists: %s ... skipping (use' +
-                        ' --force or -f to overwrite)' % infile)
+            log.warning('Storyfilename already exists: %s ... skipping (use --force or -f to overwrite)' % infile)
             continue
 
         log.info('Building command string')
