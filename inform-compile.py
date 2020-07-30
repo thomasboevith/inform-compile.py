@@ -53,7 +53,7 @@ Options:
   --version                 Show version.
   -v                        Print info (-vv for printing lots of info (debug)).
 
-Copyright (C) 2016 Thomas Boevith
+Copyright (C) 2020 Thomas Boevith
 
 License: GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it. There is NO
@@ -121,7 +121,7 @@ if __name__ == '__main__':
     log.debug('docopt args=%s' % args)
 
     command = args['--informbin']
-    if not os.file.exists(command):
+    if not os.path.exists(command):
         log.error('Inform binary not found: %s' % args['--informbin'])
         sys.exit(1)
     
