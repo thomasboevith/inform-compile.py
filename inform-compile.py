@@ -220,7 +220,7 @@ if __name__ == '__main__':
           librarypaths = '+'+args['--librarypaths']+','+infiledirname
           command.append(librarypaths)
 
-        command.append(tmpdir)
+        command.append(args['--tmpdir'])
         command.append(infile)
         command.append(storyfilename)
         log.info('Compiling infile with command: %s' % ' '.join(command))
