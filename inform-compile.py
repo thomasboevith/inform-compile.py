@@ -131,6 +131,8 @@ if __name__ == '__main__':
     if not os.path.exists(args['--tmpdir']):
         log.error('Temporary directory not found: %s' % args['--tmpdir'])
         sys.exit(1)
+    else:
+        tmpdir = '+temporary_path=%s' % args['--tmpdir']
     
     for infile in args['<infiles>']:
         log.info('Processing infile: %s' % infile)
@@ -220,7 +222,7 @@ if __name__ == '__main__':
           librarypaths = '+'+args['--librarypaths']+','+infiledirname
           command.append(librarypaths)
 
-        command.append(args['--tmpdir'])
+        command.append(tmpdir)
         command.append(infile)
         command.append(storyfilename)
         log.info('Compiling infile with command: %s' % ' '.join(command))
