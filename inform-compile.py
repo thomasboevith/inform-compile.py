@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import base64
+import charenc
 import docopt
 import hashlib
 import humanize
@@ -82,7 +83,10 @@ def getmetadata(filename):
     releasenumber_pattern = re.compile('^Release \d+')
     serialnumber_pattern = re.compile('^Serial "\d+"')
     number_pattern = re.compile('\d+')
-    for line in open(filename):
+    rawdata = open(filename, 'rb').read()
+    result = chardet.detect(rawdata)
+    charenc = result['encoding']
+    for line in open(filename, encoding=charenc):
         if re.findall(pattern, line):
             fieldname, value = line.split(':')
             fieldname = fieldname.split(' ')[1:][0].lower()
