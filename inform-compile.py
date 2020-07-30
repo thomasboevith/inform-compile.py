@@ -14,12 +14,9 @@ import subprocess
 
 version = '0.4'
 
-homedir = os.getenv("HOME")
-tmpdir = '+temporary_path=%s/tmp/inform_tmp' % homedir
-
 __doc__ = """inform-compile.py {version} --- Compilation of Inform source to story files
 Usage:
-  {filename} --informbin=<name> [--devstage=<name>] [--dev|--release]
+  {filename} --informbin=<name> --tmpdir=<name> [--devstage=<name>] [--dev|--release]
              [--language=<name>] [--librarypaths=<name>]
              [--unicode] [--outdirectory=<name>] [--storyfileprefix=<name>]
              [--storyfilesuffix=<name>] [--nostorysuffix]
@@ -36,6 +33,7 @@ Options:
   --language=<name>         Language of source code. (English/Danish)
                                                             [default: English].
   --informbin=<name>        Inform binary to use for compilation.
+  --tmpdir=<name>           Path to directory for temporary files.
   --librarypaths=<name>     Library path(s) (comma-separated if more than one).
   --storyfileversion=<num>  Version of story file [default: 5].
                             Default is version-5 (Advanced) story file,
@@ -130,8 +128,9 @@ if __name__ == '__main__':
     else:
         command = [args['--informbin']]
     
-    if not os.path.exists(tmpdir):
-        os.makedirs(tmpdir)
+    if not os.path.exists(args['--tmpdir']):
+        log.error('Temporary directory not found: %s' % args['--tmpdir'])
+        sys.exit(1)
     
     for infile in args['<infiles>']:
         log.info('Processing infile: %s' % infile)
