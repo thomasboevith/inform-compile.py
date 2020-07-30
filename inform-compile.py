@@ -120,10 +120,11 @@ if __name__ == '__main__':
     log.debug('%s started' % os.path.basename(__file__))
     log.debug('docopt args=%s' % args)
 
-    command = [args['--informbin']]
-    if not os.path.exists(command):
+    if not os.path.exists(args['--informbin']):
         log.error('Inform binary not found: %s' % args['--informbin'])
         sys.exit(1)
+    else:
+        command = [args['--informbin']]
     
     if not os.path.exists(tmpdir):
         os.makedirs(tmpdir)
