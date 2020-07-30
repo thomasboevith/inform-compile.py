@@ -120,7 +120,7 @@ if __name__ == '__main__':
     log.debug('%s started' % os.path.basename(__file__))
     log.debug('docopt args=%s' % args)
 
-    command = args['--informbin']
+    command = [args['--informbin']]
     if not os.path.exists(command):
         log.error('Inform binary not found: %s' % args['--informbin'])
         sys.exit(1)
