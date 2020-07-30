@@ -19,7 +19,7 @@ tmpdir = '+temporary_path=%s/tmp/inform_tmp' % homedir
 __doc__ = """inform-compile.py {version} --- Compilation of Inform source to story files
 Usage:
   {filename} --informbin=<name> [--devstage=<name>] [--dev|--release]
-             [--language=<name>] [--librarypath=<name>]
+             [--language=<name>] [--librarypaths=<name>]
              [--unicode] [--outdirectory=<name>] [--storyfileprefix=<name>]
              [--storyfilesuffix=<name>] [--nostorysuffix]
              [--storyfileversion=<num>] [--writejs] [--force]
