@@ -11,16 +11,15 @@ import tempfile
 import time
 import subprocess
 
-version = '0.3'
+version = '0.4'
 
 homedir = os.getenv("HOME")
-command = ['%s/local/inform/bin/inform' % homedir]
-librarypaths = '+include_path=%s/local/inform/share/inform/lib,%s/mydvl/danish-inform' % (homedir, homedir)
 tmpdir = '+temporary_path=%s/tmp/inform_tmp' % homedir
 
 __doc__ = """inform-compile.py {version} --- Compilation of Inform source to story files
 Usage:
-  {filename} [--devstage=<name>] [--dev|--release] [--language=<name>]
+  {filename} --informbin=<name> [--devstage=<name>] [--dev|--release]
+             [--language=<name>] [--librarypath=<name>]
              [--unicode] [--outdirectory=<name>] [--storyfileprefix=<name>]
              [--storyfilesuffix=<name>] [--nostorysuffix]
              [--storyfileversion=<num>] [--writejs] [--force]
@@ -35,6 +34,8 @@ Options:
   --release                 Short option for setting --devstage=release.
   --language=<name>         Language of source code. (English/Danish)
                                                             [default: English].
+  --informbin=<name>        Inform binary to use for compilation.
+  --librarypaths=<name>     Library path(s) (comma-separated if more than one).
   --storyfileversion=<num>  Version of story file [default: 5].
                             Default is version-5 (Advanced) story file,
                             see http://inform-fiction.org/manual/html/s45.html
@@ -119,6 +120,14 @@ if __name__ == '__main__':
     log.debug('%s started' % os.path.basename(__file__))
     log.debug('docopt args=%s' % args)
 
+    command = args['--informbin']
+    if not os.file.exists(command):
+        log.error('Inform binary not found: %s' % args['--informbin'])
+        sys.exit(1)
+    
+    if not os.path.exists(tmpdir):
+        os.makedirs(tmpdir)
+    
     for infile in args['<infiles>']:
         log.info('Processing infile: %s' % infile)
         infiledirname, infilename = os.path.split(infile)
@@ -204,8 +213,9 @@ if __name__ == '__main__':
             command.append('+language_name=Danish')
 
         # Append source file dir to library paths
-        librarypaths += ','+infiledirname
-        command.append(librarypaths)
+        if args['--librarypaths']:
+          librarypaths = '+'+args['--librarypaths']+','+infiledirname
+          command.append(librarypaths)
 
         command.append(tmpdir)
         command.append(infile)
