@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import base64
-import charenc
+import chardet
 import docopt
 import hashlib
 import humanize
