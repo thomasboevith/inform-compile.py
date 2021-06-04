@@ -217,7 +217,7 @@ if __name__ == '__main__':
                or (args['--language'].lower() == 'dansk'):
             command.append('+language_name=Danish')
 
-        command.append('-v%i' % args['--storyfileversion'])
+        command.append('-v%s' % args['--storyfileversion'])
             
         # Append source file dir to library paths
         if args['--librarypaths']:
