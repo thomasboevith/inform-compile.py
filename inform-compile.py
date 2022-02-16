@@ -12,7 +12,7 @@ import tempfile
 import time
 import subprocess
 
-version = '0.54'
+version = '0.5'
 
 __doc__ = """inform-compile.py {version} --- Compilation of Inform source to story files
 Usage:
