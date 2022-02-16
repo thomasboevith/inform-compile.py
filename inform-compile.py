@@ -234,7 +234,7 @@ if __name__ == '__main__':
             command.append('-v%s' % args['--storyfileversion'])
 
         if args['--vorple']:
-            command.append("'$#TARGET_VORPLE=1' '$$MAX_STATIC_DATA=30000' '$$MAX_LABELS=12000'")
+            command.append("--define TARGET_VORPLE")
 
         # Append source file dir to library paths
         if args['--librarypaths']:
