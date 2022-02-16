@@ -18,7 +18,8 @@ __doc__ = """inform-compile.py {version} --- Compilation of Inform source to sto
 Usage:
   {filename} --informbin=<name> --tmpdir=<name> [--devstage=<name>] [--dev|--release]
              [--language=<name>] [--librarypaths=<name>]
-             [--unicode] [--gluxl] [--outdirectory=<name>] [--storyfileprefix=<name>]
+             [--unicode] [--outdirectory=<name>] [--storyfileprefix=<name>]
+             [--gluxl] [--vorple]
              [--storyfilesuffix=<name>] [--nostorysuffix]
              [--storyfileversion=<num>] [--writejs]
              [--force] [-v ...] <infiles>...
@@ -40,7 +41,8 @@ Options:
                             see http://inform-fiction.org/manual/html/s45.html
   --unicode -u              Source file is in unicode encoding.
                                                               [default: false].
-  --gluxl -g                Compile a Gluxl game. [default: false].
+  --vorple                  Compile a Vorple game. [default: false].
+  --gluxl                   Compile a Gluxl game. [default: false].
   --outdirectory=<name>     Output directory for story files.
                                               (default is same as source file).
   --storyfileprefix=<name>  Prefix for story files.
@@ -179,6 +181,10 @@ if __name__ == '__main__':
         if args['--nostorysuffix']:
             args['--storyfilesuffix'] = ''
 
+
+        if args['--vorple']:
+            args['--gluxl'] = True
+
         storyfilename = args['--outdirectory'] + args['--storyfileprefix'] \
                         + infilebasename + args['--storyfilesuffix']
         if args['--gluxl']:
@@ -226,6 +232,9 @@ if __name__ == '__main__':
 
         if not args['--gluxl']:
             command.append('-v%s' % args['--storyfileversion'])
+
+        if args['--vorple']:
+            command.append("'$#TARGET_VORPLE=1' '$$MAX_STATIC_DATA=30000' '$$MAX_LABELS=12000'")
 
         # Append source file dir to library paths
         if args['--librarypaths']:
