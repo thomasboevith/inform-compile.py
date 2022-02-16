@@ -12,16 +12,16 @@ import tempfile
 import time
 import subprocess
 
-version = '0.4'
+version = '0.54'
 
 __doc__ = """inform-compile.py {version} --- Compilation of Inform source to story files
 Usage:
   {filename} --informbin=<name> --tmpdir=<name> [--devstage=<name>] [--dev|--release]
              [--language=<name>] [--librarypaths=<name>]
-             [--unicode] [--outdirectory=<name>] [--storyfileprefix=<name>]
+             [--unicode] [--gluxl] [--outdirectory=<name>] [--storyfileprefix=<name>]
              [--storyfilesuffix=<name>] [--nostorysuffix]
-             [--storyfileversion=<num>] [--writejs] [--force]
-             [-v ...] <infiles>...
+             [--storyfileversion=<num>] [--writejs]
+             [--force] [-v ...] <infiles>...
   {filename} (-h | --help)
   {filename} --version
 
@@ -40,6 +40,7 @@ Options:
                             see http://inform-fiction.org/manual/html/s45.html
   --unicode -u              Source file is in unicode encoding.
                                                               [default: false].
+  --gluxl -g                Compile a Gluxl game. [default: false].
   --outdirectory=<name>     Output directory for story files.
                                               (default is same as source file).
   --storyfileprefix=<name>  Prefix for story files.
@@ -52,7 +53,7 @@ Options:
   --version                 Show version.
   -v                        Print info (-vv for printing lots of info (debug)).
 
-Copyright (C) 2020 Thomas Boevith
+Copyright (C) 2022 Thomas Boevith
 
 License: GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it. There is NO
@@ -179,8 +180,11 @@ if __name__ == '__main__':
             args['--storyfilesuffix'] = ''
 
         storyfilename = args['--outdirectory'] + args['--storyfileprefix'] \
-                        + infilebasename + args['--storyfilesuffix'] + '.z' \
-                        + str(args['--storyfileversion'])
+                        + infilebasename + args['--storyfilesuffix']
+        if args['--gluxl']:
+            storyfilename += '.ulx'
+        else:
+            storyfilename +=  '.z' + str(args['--storyfileversion'])
 
         if not os.path.isfile(infile):
             log.warning('Infile not found: %s ... skipping it' % infile)
@@ -217,8 +221,12 @@ if __name__ == '__main__':
                or (args['--language'].lower() == 'dansk'):
             command.append('+language_name=Danish')
 
-        command.append('-v%s' % args['--storyfileversion'])
-            
+        if args['--gluxl']:
+            command.append('-G')
+
+        if not args['--gluxl']:
+            command.append('-v%s' % args['--storyfileversion'])
+
         # Append source file dir to library paths
         if args['--librarypaths']:
           librarypaths = '+'+args['--librarypaths']+','+infiledirname
