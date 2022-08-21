@@ -16,7 +16,7 @@ version = '0.5'
 
 __doc__ = """inform-compile.py {version} --- Compilation of Inform source to story files
 Usage:
-  {filename} --informbin=<name> --tmpdir=<name> [--devstage=<name>] [--dev|--release]
+  {filename} --informbin=<name> [--tmpdir=<name>] [--devstage=<name>] [--dev|--release]
              [--language=<name>] [--librarypaths=<name>]
              [--unicode] [--outdirectory=<name>] [--storyfileprefix=<name>]
              [--gluxl] [--vorple]
@@ -131,11 +131,12 @@ if __name__ == '__main__':
     else:
         command = [args['--informbin']]
     
-    if not os.path.exists(args['--tmpdir']):
-        log.error('Temporary directory not found: %s' % args['--tmpdir'])
-        sys.exit(1)
-    else:
-        tmpdir = '+temporary_path=%s' % args['--tmpdir']
+    if args['--tmpdir']:
+        if not os.path.exists(args['--tmpdir']):
+            log.error('Temporary directory not found: %s' % args['--tmpdir'])
+            sys.exit(1)
+        else:
+            tmpdir = '+temporary_path=%s' % args['--tmpdir']
     
     for infile in args['<infiles>']:
         log.info('Processing infile: %s' % infile)
@@ -241,7 +242,9 @@ if __name__ == '__main__':
           librarypaths = '+'+args['--librarypaths']+','+infiledirname
           command.append(librarypaths)
 
-        command.append(tmpdir)
+        if args['--tmpdir']:
+            command.append(tmpdir)
+            
         command.append(infile)
         command.append(storyfilename)
         log.info('Compiling infile with command: %s' % ' '.join(command))
