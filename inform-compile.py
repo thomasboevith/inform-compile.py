@@ -78,12 +78,12 @@ def filesize(filename):
 def getmetadata(filename):
     metadata = {}
     keys = []
-    pattern = re.compile('^! \w+:')
+    pattern = re.compile('^! \\w+:')
     storyfile_releasenumber = []
     storyfile_serialnumber = []
-    releasenumber_pattern = re.compile('^Release \d+')
-    serialnumber_pattern = re.compile('^Serial "\d+"')
-    number_pattern = re.compile('\d+')
+    releasenumber_pattern = re.compile('^Release \\d+')
+    serialnumber_pattern = re.compile('^Serial "\\d+"')
+    number_pattern = re.compile('\\d+')
     rawdata = open(filename, 'rb').read()
     result = chardet.detect(rawdata)
     charenc = result['encoding']
